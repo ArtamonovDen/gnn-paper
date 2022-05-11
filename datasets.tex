@@ -1,0 +1,116 @@
+\section{Datasets}
+
+
+Some common words from NetPro2vec.
+
+Then list datasets
+
+Table with stats
+
+Description for each dataset
+
+Datasets from TIDatasets \cite{TUDataset}
+
+Link https://chrsmrrs.github.io/datasets/docs/datasets/
+
+
+\begin{center}
+    \begin{table}
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            aa & ss & aa & aa\\
+            \hline
+            \hline
+            STERE & 2012 & 1000 & $[251 \sim 1200] \times [222 \sim 900]$ \\
+            \hline
+
+            \hline
+        \end{tabular}
+    \caption{ss}
+    \label{tab:datasets}
+    \end{table}
+\end{center}
+
+\begin{center}
+    \begin{table}[]
+        \scriptsize
+        \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+                             & MUTAG & PROTEINS & ENZYMES & NCI-1 & DD & Brain fMRI & Kidney RNA Seq \\ \hline
+        \# Graphs            &       &          &         &       &    &            &                \\ \hline
+        \# Classes           &       &          &         &       &    &            &                \\ \hline
+        \# Samples per class &       &          &         &       &    &            &                \\ \hline
+        \# Vertices          &       &          &         &       &    &            &                \\ \hline
+        Average \# edge      &       &          &         &       &    &            &                \\ \hline
+        Average edge density &       &          &         &       &    &            &                \\ \hline
+        Has edge weights     &       &          &         &       &    &            &                \\ \hline
+        Has edge attrubutes  &       &          &         &       &    &            &                \\ \hline
+        Average degree       &       &          &         &       &    &            &                \\ \hline
+                             &       &          &         &       &    &            &                \\ \hline
+        \end{tabular}
+        \end{table}
+\end{center}
+
+Datasets used for the current work can be devided into two groups. The first one includes datasets from TUDatasets \cite{TUDataset} -
+a large collection of graph datasets, introduced in \cite{TUDataset} and very common and widely used for benchmarking of GNN models.
+In current work the following TUDataset are used: MUTAG, PROTEINS, ENZYMES, NCI-1, DD.
+
+
+Small molecules
+A common class of graph datasets consists
+of small molecules with class labels representing, e.g., toxicity
+or biological activity determined in drug discovery projects.
+Here, a graph represents a molecule, i.e., nodes take the places
+of atoms and edges that of chemical bonds. Consequently, the
+labels encode atom and bond types, possibly with additional
+chemical attributes. The graph models differ, e.g., in whether
+hydrogen atoms are represented explicitly by nodes, and bonds
+in aromatic rings are annotated accordingly.
+s
+Our collection contains small datasets commonly used in the
+early graph kernel literature such as MUTAG (Debnath et al.,
+1991) and PTC (Helma et al., 2001), medium-sized datasets,
+e.g., NCI1 and NCI109 (Wale et al., 2008; Shervashidze et al.,
+2011), as well as several large datasets derived from the TOX21
+challenge 2014 or PUBCHEM (Kim et al., 2018). This includes
+the eleven datasets from anticancer screen tests with different
+cancer cell lines used by Yan et al. (2008) to demonstrate
+the efficacy of classifiers based on significant graph patterns.
+These datasets, the largest of which contains more than 79k
+
+
+Bioinformatics. The datasets DD, ENZYMES and PROTEINS
+represent macromolecules. Borgwardt et al. (2005) introduced
+a graph model for proteins, where nodes represent secondary
+structure elements and are annotated by their type, i.e., helix,
+sheet, or turn, as well as several physical and chemical information. An edge connects two nodes if they are neighbors along
+the amino acid sequence or one of three nearest neighbors in
+space. Using this approach, the dataset ENZYMES was derived
+from the BRENDA database (Schomburg et al., 2004). Here, the
+task is to assign enzymes to one of the 6 EC top-level classes,
+which reflect the catalyzed chemical reaction. Similarly, the
+dataset PROTEINS was derived from (Dobson  Doig, 2003),
+and the task is to predict whether a protein is an enzyme. The
+dataset DD used by Shervashidze et al. (2011) is based on
+the same data, but contains graphs, where nodes represent
+individual amino acids and edges their spatial proximity
+
+% TODO: add cites for each dataset
+% #TODO: list datasets and describe each of them
+
+Another group consists of two real medical datasets used for benchmarking Netpro2vec model in \cite{Netpro2vec}: Brain fMRI and
+Kidney RNASeq datasets.
+
+Brain fMRI dataset includes 124 real graphs derived in \cite{BrainFmri} from the Center for Biomedical Research Excellence (COBRE) dataset, which contains
+functional magnetic resonance imaging (fMRI) time-series data. Brain fMRI dataset includes 124 graphs: 54 graphs from Schizophrenia subjects (Sch) and 70 graphs from
+healthy controls (Ctrl). Each graph contains 263 nodes corresponding to different brain regions. The edges have weights representing Fisher-transformed correlation between
+the fMRI time-series of the nodes after ranking.
+
+Kidney RNASeq dataset consists of metabolic networks constructed by mapping gene expression data on the biochemical reactions 
+extracted from the kidney tissue metabolic model. Gene expression data is obtained from TCGA-KIRC and TCGA-KIRP projects
+of the Genomic Data Commons (GDC, https://portal.gdc.cancer.gov) portal. Datasets was prepared by authors of \cite{Netpro2vec}
+Kidney RNASeq dataset contains 299 networks devided into three classes. Two of them corresponds to the two most common types(according to National Cancer Institute(https://www.cancer.gov/pediatric-adult-rare-tumor/rare-tumors/rare-kidney-tumors/clear-cell-renal-cell-carcinoma and https://www.cancer.gov/pediatric-adult-rare-tumor/rare-tumors/rare-kidney-tumors/papillary-renal-cell-carcinoma))
+of kidney cancer: Clear Cell Renal Cell Carcinoma (159 samples) and Papillary Renal Cell Carcinoma (90 samples). The third classs Solid Tissue Normal represents the absence of pathology 
+and contains 50 samples.
+
+Both datasets were downloaded from cbs-group repository\footnote{\url{https://github.com/cds-group/GraphDatasets}} \footnote{\url{https://github.com/cds-group/Netpro2vec}}, authors of Netpro2vec model \cite{Netpro2vec}.
