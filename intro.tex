@@ -1,3 +1,49 @@
 \section{Introduction}
 
-Some sample Introduction \cite{Adam}
+
+Neural networks algorigthms have already become a state-of-the-art solution for a wide range of tasks
+in many different fileds, such as computer vision, natural language processings, speech recognition and many others.
+Most of these tasks have in common the possibility of representing processed data in Euclidean domain. However,
+a large number of learning tasks have to deal with data expressed with graph. Graphs allow 
+to represent information about relationship between different objects, but requires another approach 
+to apply neural networks algorithms, as grah data is non-Euclidean. 
+
+To solve this issue researches developed a sepecial kind of neural networks, which can operate graph data, called 
+Graph Neural Network, or GNN \cite{GNN}. Since the first introduction of GNN, a lot of new upgraded, capable and more powerful 
+models models have been developed and used for many practical applications in such areas as
+physics simulations <TODO cite>,  antibacterial discovery<TODO cite>,  traffic prediction<TODO cite>, fake news detection<TODO>, 
+recommendation systems <TODO> and many others. 
+
+%For example. one of the most popular application is recommender system at Pinterest company, called PinSage, introduced in
+% ... and used in production.  <TODO: edit and cite>
+
+% TODO: maybe about twitter
+
+% <examples from here https://distill.pub/2021/gnn-intro/>
+% <May add examples and pictures from here https://gordicaleksa.medium.com/how-to-get-started-with-graph-machine-learning-afa53f6f963a>
+
+
+GNN models can be used to solve three general types of prediction tasks on graphs: 
+node level, edge level and graph level tasks. Node level tasks aims to predict some propeprty of node, for example
+to predict node label. Edge level tasks include tasks related to edge properties prediction, such as labels of edges. 
+Edge level tasks allow to discover connection types between the entites in graph. The remaining group of tasks is graph level tasks.
+Such tasks are related to predicting of graph level properties, e.g. class of the given graph, which is known as
+graph classification problem. This is analogous to image classification task in computer vision field or
+sentiment analysis tasks in natural language processing.
+
+
+Graph classification problem is very commonly used for biomedical applications.
+
+% TODO: from Intro of Netprovec or from here  https://arxiv.org/pdf/2101.06569.pdf
+
+
+The main goal of the current work is to compare several different approaches to solve graph classification problem 
+on biomedical data. <TODO: say about relevance (why biomed?)>. This approaches will include the usage of 
+several graph convolutional networks architectures : GCN \cite{GCN}, <TODO: list all with cites>. Besides, 
+several ways for generation of node feature matrix will be applied. For node feature matrix generation will be used
+encoded information about labels and degrees of node, as well as node distance distibution matrix(NDD), proposed in \cite{Netpro2vec}
+and used to obtain graph embeddings.
+
+The paper is organized as follows. \hyperref[sec:datasets]{Section2} contains detailed description of used biomedical dataset.
+Short review of GNN algorigthms and description of used algorigthms are presented in \hyperref[sec:models]{Section 3}.
+\hyperref[sec:experiments]{Section 4} contains implementation details and experiments results. Finally, \hyperref[sec:conclusion]{Section 6} reports conclusion. 
