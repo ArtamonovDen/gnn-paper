@@ -15,6 +15,8 @@ Below there are description of the data preparation process, followed by model i
 of the organization of the training process.
 
 
+% TODO: say about what experiments are
+
 \subsection{Data preparing process}
 
 Framework \texttt{Pytorch} proposes a unified way to work with data.
@@ -131,7 +133,9 @@ Accuracy is measured as mean of 5 separate runs, which include training dataset 
 best model using validation set and evaluate accuracy on test set, which is not used during train step.
 Based on these test accuracy metric, mean and standard deviation is measured.
 
-Table \ref{tab:results} shows the result of experiments.
+Table \ref{tab:results} shows the result of experiments. For each model there are two types of result: "deg" and "ndd".
+Model marked with "deg" uses one hot encoded node degrees as a feature matrix, while "ndd" mark stands for NDD matrix 
+as a feature matrix.
 
 \begin{table}[]
     \scriptsize
@@ -145,14 +149,12 @@ Table \ref{tab:results} shows the result of experiments.
         \multirow{2}{*}{GCNII} & deg & 0.733$\pm$0.034          & 0.6996$\pm$0.03           & 0.2889$\pm$0.03           & 0.6929$\pm$0.023         & 0.58$\pm$0.093            & 0.475$\pm$0.087          \\
                                & ndd & 0.7156$\pm$0.029         & 0.7393$\pm$0.023          & 0.2333$\pm$0.038          & 0.7766$\pm$0.013         & 0.52$\pm$0.134            & 0.5556$\pm$0.049         \\ \hline
     \end{tabular}
-    \caption{Experiments result}
+    \caption{Experiments results}
     \label{tab:results}
 \end{table}
 
-% 1. Run all models on datasets with node_labels+degree ecoded
-% * brain gat: 32 and 4 heads
-% ** gat: no weighted, just edge features
+As result shows, that for all chosen TU Datasets, GCN model shows the best result. Accuracy of models trained and tested on one hot encoded degree feature matrices
+are is higher then one on NDD matrix, except accuracy of tests on DD dataset.
 
-
-
-% 2. Run all models on datsets with only NDD (without labels)
+Tests on datasets "Brain fMRI" and "Kidney RNA Seq" show rather low accuracy. The best accuracy for "Brain fMRI" shows GAT model with encoded degrees matrix. 
+The best accuracy for "Kidney RNA Seq" shows GAT model with NDD matrix. 
