@@ -2,16 +2,16 @@
 \label{sec:experiments}
 
 
-Current section provides information about computational experiments, their configuration, results and details 
+Current section provides information about computational experiments, their configuration, results and details
 of implementation.
 
 Code for experiments has been developed on \texttt{Python 3.8} using \texttt{Pytroch Geometric} framework
 \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/index.html}}
- \cite{PyG}.
-This frameworks contains a lot of implemented graph neural network models, 
+\cite{PyG}.
+This frameworks contains a lot of implemented graph neural network models,
 provides a convenient tools to operate data and suggests an algorithm to train and validate models.
 
-Below there are description of the data preparation process, followed by model implementation details and description 
+Below there are description of the data preparation process, followed by model implementation details and description
 of the organization of the training process.
 
 
@@ -21,10 +21,10 @@ Framework \texttt{Pytorch} proposes a unified way to work with data.
 It consists of two stages:
 preapre dataset object with defined <TODO check from doc> methods to access data and configure DataLoader<TODO linK>
 to form batch of predefined size. Batch consists of vectors of features from datasets and labels corresponding them
-in the case of solving the classification problem. <TODO: edit> . DataLoader allows to 
+in the case of solving the classification problem. <TODO: edit> . DataLoader allows to
 itearete data within one train epoch.
 
-The same approach is used in \texttt{Pytroch Geometric} geometric framework. The difference is that 
+The same approach is used in \texttt{Pytroch Geometric} geometric framework. The difference is that
 dataset object should implenet special interface <TODO>, and DataLoaders allows to union several graph in single batch.
 
 % TODO about minibatchin
@@ -42,9 +42,9 @@ collection: MUTAG, PROTEINS, DD and ENZYMES. \texttt{Pytroch Geometric} provides
 \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/datasets.html\#torch_geometric.datasets.TUDataset}}
 
 
-The second group contains of Brain fMRI dataset and Kidney RNASeq dataset used in \cite{Netpro2vec}. Graphs from 
-these datasets are available in \texttt{graphml} format. So to operate them in the way 
-defined in \texttt{torch\_geometric.datasets}, there has been developed a custom \texttt{Dataset} object, which 
+The second group contains of Brain fMRI dataset and Kidney RNASeq dataset used in \cite{Netpro2vec}. Graphs from
+these datasets are available in \texttt{graphml} format. So to operate them in the way
+defined in \texttt{torch\_geometric.datasets}, there has been developed a custom \texttt{Dataset} object, which
 extend \texttt{InMemoryDataset} \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/data.html\#torch_geometric.data.InMemoryDataset}}
 class and allows to process them the same way as datasets from the first group.
 
@@ -79,13 +79,13 @@ All neural networks models, which are  <TODO>... requires node feature matrix. T
 acts a a signal in term of signal processing with convolutions and the base embeddings of nodes,
 which transformation should be applied to.
 
-In some cases, encoded node labels may be used as node features. However, some networks 
+In some cases, encoded node labels may be used as node features. However, some networks
 do not have neither node labels, nor features.
 In that case, node features can be constructed additionaly as a preprocessing step.
 
 In the current work two approches will be used to constuct node features.
 
-The first one is to use one-hot reprosentation of node degrees. So the node features matrix 
+The first one is to use one-hot reprosentation of node degrees. So the node features matrix
 is matrix $X \in \{0,1\}^{N \times d}$ having property $\sum_{j=1}^{d}X_{ij} = 1$ for any $i \in 1 \dots N$,
 where $N$ is the number of nodes in graph $G$ and $d$ is max degree over all nodes in graph.
 
@@ -124,6 +124,30 @@ To use node distance matrix as a node feature matrix, new custom transformation 
 
 \subsection{Results}
 
+Computational experiments includes training chosen graph neural network models on different datasets with two different
+Node feature matrices: one hot encoded degree matrix and node distance distribution matrix.
+
+Accuracy is measured as mean of 5 separate runs, which include training dataset on train set, choosing
+best model using validation set and evaluate accuracy on test set, which is not used during train step.
+Based on these test accuracy metric, mean and standard deviation is measured.
+
+Table \ref{tab:results} shows the result of experiments.
+
+\begin{table}[]
+    \scriptsize
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+                               &     & MUTAG                 & PROTEINS               & ENZYMES                & DD                    & Brain fMRI             & Kidney RNA Seq        \\ \hline
+        \multirow{2}{*}{GCN}   & deg & \textbf{0.884$\pm$0.043} & \textbf{0.7468$\pm$0.011} & \textbf{0.3458$\pm$0.038} & 0.756$\pm$0.01           & 0.56$\pm$0.0442           & 0.5583$\pm$0.032         \\
+                               & ndd & 0.844 $\pm$ 0.037         & 0.7371$\pm$0.016          & 0.3$\pm$0.019             & \textbf{0.795$\pm$0.009} & 0.4667$\pm$0.084          & 0.5611$\pm$0.066         \\ \cline{1-8}
+        \multirow{2}{*}{GAT}   & deg & 0.687$\pm$0.045          & 0.6524$\pm$0.04           & 0.2667$\pm$0.044          & 0.7128$\pm$0.018         & \textbf{0.6067$\pm$0.044} & 0.5306$\pm$0.034         \\
+                               & ndd & 0.853$\pm$0.033          & 0.7206$\pm$0.019          & 0.2639$\pm$0.038          & 0.7936$\pm$0.005         & 0.5767$\pm$0.05           & \textbf{0.5639$\pm$0.04} \\ \cline{1-8}
+        \multirow{2}{*}{GCNII} & deg & 0.733$\pm$0.034          & 0.6996$\pm$0.03           & 0.2889$\pm$0.03           & 0.6929$\pm$0.023         & 0.58$\pm$0.093            & 0.475$\pm$0.087          \\
+                               & ndd & 0.7156$\pm$0.029         & 0.7393$\pm$0.023          & 0.2333$\pm$0.038          & 0.7766$\pm$0.013         & 0.52$\pm$0.134            & 0.5556$\pm$0.049         \\ \hline
+    \end{tabular}
+    \caption{Experiments result}
+    \label{tab:results}
+\end{table}
 
 % 1. Run all models on datasets with node_labels+degree ecoded
 % * brain gat: 32 and 4 heads
