@@ -2,7 +2,7 @@
 \label{sec:experiments}
 
 
-Current section provides information about computational experiments, their configuration, results and details
+This section provides information about computational experiments, their configuration, results and details
 of implementation.
 
 Code for experiments has been developed on \texttt{Python 3.8} using \texttt{Pytroch Geometric} framework
@@ -69,8 +69,29 @@ followed by  final linear layer to calculate logits.
 \subsection{Models training pipeline}
 
 
+To train and evaluate model there has been prepared the following pipeline.
 
-% about colab, wnb and the whole pipeline
+Firstly, dataset prepared and uploaded to \texttt{Google Drive}. Then code for training is wrapped
+into command line util and pushed to \texttt{GitHub} repository. Training and evaluation process run
+in \texttt{Google Colab}.Training metrics are uploaded to \texttt{Weight And Biasis} - application for displaying
+and storing graphs in runtime. Testing metrics are uploaded to \texttt{Google Drive}.
+The whole pipeline is shown on figure \ref{fig:pipeline}. Example of graph on  \texttt{Weight And Biasis}
+are shown on figure \ref{fig:wnb}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{schema}
+    \caption{Training pipeline schema}
+    \label{fig:pipeline}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{wnb}
+    \caption{Graphs example from Weight And Biasis. Graps are drawing in training runtime}
+    \label{fig:wnb}
+\end{figure}
 
 \subsection{Node features transformation}
 
