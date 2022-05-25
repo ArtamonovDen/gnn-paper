@@ -18,14 +18,10 @@ These models generalized recursive neural networks to deal with more general cla
 Presented in \cite{GNN} GNN architecture is commonly refered as vanilla GNN.
 
 
-
-% TODO: detailed about vanila GNN model, deal with undirected graphs, limitations
-
-
 Over the last decade, there have been proposed a huge number of new architectures and frameworks, which 
 outperform vanilla GNNs. Below there will be desctibed several of them. 
 
-% CONVOLUTIONS
+% GCN
 
 
 One of the most common modern approaches to constructing of graph neural network is
@@ -145,7 +141,6 @@ Authors \cite{GCN} developed the idea of usage spectral convolution and presente
 convolutional neural network by stacking multiple simplified convolution layers with limited parameter $K=1$.
 Single layer of such network can be expressed as: 
 
-
 \begin{equation}
     Conv(g_\theta,x) \approx {\theta}_0 T_0(\hat{L})x + {\theta}_1 T_1(\hat{L})x = {\theta}_0 x + {\theta}_1 (\frac{2}{\lambda_{max}}L-I_N)x
     \label{eq:gcn_conv_appr}
@@ -157,7 +152,6 @@ Then authors of \cite{GCN} suggested to approximate $\lambda_{max} \approx 2$, s
     Conv(g_\theta,x) \approx {\theta}_0 x + {\theta}_1 (L-I_N)x = {\theta}_0 x - {\theta}_1 D^{-\frac{1}{2}}AD^{-\frac{1}{2}}x
     \label{eq:gcn_conv_appr2}
  \end{equation}
-
 
 However, instead of two parameters $\theta_0$ and $\theta_1$ authors suggested to use the single one - $\theta = \theta_0 = -\theta_1$. Thus it allows to
 address overfitting problem and to simplify computations per layer. So, the follwoing expression is
@@ -207,7 +201,7 @@ ReLU function is an activation function, used to add non-linearity to neural net
 Along with spectral convolution approach, there are other ways to prepare node embeddings. One of such approaches, is 
 attention-based architecture model called Graph Attention Networks (GAT) proposed in \cite{GAT}.
 The main idea of this model is to apply attention mechanism to graph data. Based on attention models have become 
-the most common solution for many sequence-based tasks [TODO (Bahdanau et al., 2015; Gehring et al., 2016). from GAT].
+the most common solution for many sequence-based tasks \cite{GATintro1}, \cite{GATintro2}.
 The main feature of attention mechanism is that it allows to focus on the most relevant parts of the input 
 to make a desicion.
 
@@ -225,7 +219,6 @@ to input node features multiplied to the shared weight matrix $W \in R^{F'} \tim
 This coefficient indicates the importance of of node j's features to node i. The next step is performing masked attention to 
 be able to compute only coefficients for a node is some defined node's neighborhood $N$ and normalizing coefficients by neighborhood:
 
-
 \begin{equation}
    \alpha_{ij} = softmax_j(e_{ij}) = \frac{exp(e_{ij})}{\sum_{k \in N_i}exp(e_{ik})}
 \end{equation}
@@ -239,7 +232,7 @@ As a result, the coefficients computed by the attention mechanism can be express
     \label{eq:final_att_coef}
  \end{equation}
 
-where $||$ denotes concatenation operation. LeackyReLU - a activation function similar to ReLU \ref{eq:relu}, but
+where $||$ denotes concatenation operation. LeackyReLU - a activation function similar to ReLU defined in \ref{eq:relu}, but
 apable of taking negative values:
 
 \begin{equation}
@@ -250,9 +243,6 @@ apable of taking negative values:
     \end{cases}
     \label{eq:leacky_relu}
 \end{equation}
-
-
-% TODO about LeackyReLU
 
 When coefficients are obtained - we can apply them to corresponding nodes:
 
@@ -265,7 +255,6 @@ To stabilize training procedure, authors extends self-attention mechanism
 to multi-head attention, proposed in \cite{AttentionIsAllYouNeed}.
 The idea of multi-head attention is to train several representations for each nodes at the same layer. And the final embedding
 is just a concatenation of the all produced ones. For $K$ independant heads  there is a following final representation of the node:
-
 
 \begin{equation}
     h'_i = ||_{k=1}^{K}  \sigma \left( \sum_{j \in {N_i}} \alpha^{k}_{ij} W^{k} h_j \right)
