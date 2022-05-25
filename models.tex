@@ -56,8 +56,6 @@ The solution of this issue was proposed in Spectral Network model Bruna et al. [
 convolution operation is defined using eigendecomposition of the graph Laplacian.
 
 
-% TODO: formula of graph laplasian. Maube with example.
-% 1. Graph Laplacian is ....
 For a undirected graph $G = (V,E)$ with $|V|=n$ , graph Laplacian matrix  $L \in R^{n \times n}$ is defined as 
 \[L = D-A\]
 
@@ -126,15 +124,30 @@ problem, authors propose to replace numerical unstable multiplier $D^{-\frac{1}{
 with $\tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}$, where $\tilde{A}=A+I_N$ and $\tilde{D}_{ii}=\sum_{j}\tilde{A}_{ij}$.
 
 The final rule for linear convolutional layer for GCN can be generalized as following. Let signal $X \in R^{N\times C}$ is a matrix of $C$-dimensional
-feature vectors for each of $N$ nodes, and $\Theta \in R^{C \times F}$ is a matrix of filter parameters. So convoled signal $Z \in R^{N \times F}$ is 
+feature vectors for each of $N$ nodes, and $\Theta \in R^{C \times F}$ is a matrix of filter parameters. So convoled signal $X' \in R^{N \times F}$ is 
 expessed as 
 
 \begin{equation}
-    Z = \tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}X\Theta
-    \label{eq:FinalGCN}
+    X' = \tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}X\Theta
+    \label{eq:final_gcn}
 \end{equation}
 
 So, GCN model allows to calculate node representations as vectors (embeddings) using layer-wise convolutional neural network.
+
+We can rewrite the equation \ref{eq:final_gcn} in term of neural network layer. So, obtained the graph convolutional layer 
+is the following
+
+
+\begin{equation}
+    H^{(l+1)} = ReLU(\tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}H^{(l)}W^{(l)})
+    \label{eq:final_gcn_nn}
+\end{equation}
+
+where $H^{(l)} \in R^{n \times d}$ is a hidden state matrix on layer $l$, $d$ is a dimension
+of the convolution and $W^{(l)} \in R^{d \ time d}$ is a matrix of trainable parmeters of the layer $l$.
+
+% TOOD: about RelU ?
+
 
 % GAT
 
@@ -181,7 +194,7 @@ where $||$ denotes concatenation operation. When coefficients are obtained - we 
  \end{equation}
 
 To stabilize training procedure, authors extends self-attention mechanism
-to multi-head attention, proposed in [TODO Attention is all you need. cite].
+to multi-head attention, proposed in \cite{AttentionIsAllYouNeed}.
 The idea of multi-head attention is to train several representations for each nodes at the same layer. And the final embedding
 is just a concatenation of the all produced ones. For $K$ independant heads  there is a following final representation of the node:
 
@@ -207,7 +220,20 @@ of attention calculating is very efficient.
 
 % GCN2
 
-Both GCN\cite{GCN} and GAT\cite{GAT} models are shallow, as achive achieve their best performance with 2-layers. It caused by (say about over smoothin)
+Both GCN\cite{GCN} and GAT\cite{GAT} models are shallow. Attempts to stacking more layers and to add non-linearity
+tends to degrade the performance of these models \cite{GCNII} because of over-smoothing phenomena, described in \cite{OverSmoothing}.
+Over-smoothing suggests that node representations becomes indistinguishable as thaey are inclined to converge 
+to a certain value. This fact assigns restrictions on the number of layers in the network and as a result
+limitations network's ability to extract information from high-order neighbors.
+
+
+% TODO: later about resnet
+% To overcome the isuue of network depth limit, in computer vision filed there has beed proposed ResNet model \cite{ResNet},
+% based on residual connections between different layers of the network. 
+
+Authors of \cite{GCNII} extends GCN model with two modifications to prevent over-smoothing issue. Proposed architecture 
+called Graph Convolutional Network via Initial residual and Identity mapping (GCNII).
+
 
 Authors of \cite{GCNII} propose a new deep model GCN-II, which show a simple way to impove [TODO]
 
@@ -239,3 +265,6 @@ As a final classifier, simple 2-layer perceptron will be used:
     \label{eq:final_classifier}
 \end{equation}
 
+
+
+%TODO: In the current paper ...
