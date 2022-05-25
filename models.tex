@@ -234,6 +234,31 @@ limitations network's ability to extract information from high-order neighbors.
 Authors of \cite{GCNII} extends GCN model with two modifications to prevent over-smoothing issue. Proposed architecture 
 called Graph Convolutional Network via Initial residual and Identity mapping (GCNII).
 
+The $l$-th layer of GCNII is defined as the following:
+
+\begin{equation}
+    H^{l+1} = ReLU\left( ((1-\alpha_{l})\tilde{P}H^{l} + \alpha_{l}H^{0}) ((1-\beta_{l})I_n + \beta_{l} W^{l})  \right)
+    \label{eq:gcnii_layer}
+\end{equation}
+
+where $\alpha_l$ and $\beta_l$ are hyperparameters.
+and $\tilde{P} = \tilde{D}^{-\frac{1}{2}}A\tilde{D}^{-\frac{1}{2}}$ is the graph 
+convolution matrix with the renormalization trick used in equation \ref{eq:final_gcn} inside the GCN's layers.
+
+Comparing with GCN layer defined in \ref{eq:final_gcn_nn} GCNII has two modifications.
+The first one is to add initial residual connection to the first layer $H^0$. It simulates 
+residual connections between different layers of the network originally proposed in 
+ResNet model \cite{ResNet} in the filed of computer vision. 
+The initial residual connection in GCNII ensures that that the final representation
+of each node retains at least a fraction of $\alpha$ from the input layer even if the network contains
+many layers stacked. Authors of \cite{GCNII} suggest to set hyperparameter $\alpha_l = 0.1$ or $0.2$.
+
+
+The second modification is to add identity mapping $I_n$ to each layer's matrix of weights.
+Adding of identity mapping provides regularization on weight matrix $W^(l)$ to avoid over-fitting.
+The value of $\beta$ depends of the number of the layer. Authors suggest to set $\beta_l = \log(\frac{\lambda}{l}+1) \approx \frac{\lambda}{l}$,
+where $\lambda$ is hyperparameter. 
+
 
 Authors of \cite{GCNII} propose a new deep model GCN-II, which show a simple way to impove [TODO]
 
