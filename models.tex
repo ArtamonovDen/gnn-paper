@@ -45,7 +45,7 @@ with different structure.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.7\textwidth]{conv_vs_grpahconv}
+    \includegraphics[width=1\textwidth]{conv_vs_grpahconv}
     \caption{2D Convolution vs. Graph Convolution \cite{SurveyOnGNN}}
     \label{fig:conv}
 \end{figure}
@@ -269,7 +269,7 @@ On the prediction (final) layer, instead of concatenation, authors suggest to em
 \end{equation}
 
 
-This last step is called aggregation and show on \ref{fig:gat}
+This last step is called aggregation and show on image \ref{fig:gat}.
 
 \begin{figure}[t]
     \centering
@@ -292,7 +292,7 @@ to a certain value. This fact assigns restrictions on the number of layers in th
 limitations network's ability to extract information from high-order neighbors.
 
 
-Authors of \cite{GCNII} extends GCN model with two modifications to prevent over-smoothing issue. Proposed architecture 
+Authors of \cite{GCNII} extend GCN model with two modifications to prevent over-smoothing issue. Proposed architecture 
 called Graph Convolutional Network via Initial residual and Identity mapping (GCNII).
 
 The $l$-th layer of GCNII is defined as the following:
@@ -316,7 +316,7 @@ many layers stacked. Authors of \cite{GCNII} suggest to set hyperparameter $\alp
 
 
 The second modification is to add identity mapping $I_n$ to each layer's matrix of weights.
-Adding of identity mapping provides regularization on weight matrix $W^(l)$ to avoid over-fitting.
+Adding of identity mapping provides regularization on weight matrix $W^{(l)}$ to avoid over-fitting.
 The value of $\beta$ depends of the number of the layer. Authors suggest to set $\beta_l = \log(\frac{\lambda}{l}+1) \approx \frac{\lambda}{l}$,
 where $\lambda$ is hyperparameter. 
 
