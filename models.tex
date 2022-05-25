@@ -1,77 +1,113 @@
 \section{GNN models overview}
 \label{sec:models}
 
-% TODO: In this section, we will provide a short literature review from the first attempts to
-% apply neural nets to graph data to modern approaches, which are spreadly used TODO: check that
-% Besides, this section contains the description of the models, used in experiments section/
 
+
+In this section, we will provide a short literature review from the first attempts to
+apply neural nets to graph data to modern approaches using using convolutions and attention mechanism.
 
 
 % GNN
 
 Early attempts to adapt neural network architectures to operate with graph data 
-were proposed in works (Frasconi et al., 1998; Sperduti  Starita, 1997). These models 
+were proposed in works \cite{FirstGNN1} and  \cite{FirstGNN2}. These models 
 used recursive neural networks (RNN) architecture. However these methods could be applied
-only to directed acyclic graphs, which were a serious restriction. <TODO: check word>.
-Models known as Graph Neural Networks (GNNs) were propesed in  Gori et al. [2005], Scarselli et al. [2004, 2009].
+only to directed acyclic graphs, which led to a serious restriction in their usage.
+Models known as Graph Neural Networks (GNNs) were propesed in  \cite{GNNlist1}, \cite{GNNlist2}, \cite{GNN}.
 These models generalized recursive neural networks to deal with more general classes of graphs.
-Presented in \cite{GNN} GNN architecture is commonly refered to be a simple base GNN.
-
-% <TODO: detailed about vanila GNN model, deal with undirected graphs, limitations>
-
-
-Over the last decade, there have been proposed a huge number of new architectures and framework, which 
-outperform <TODO check word> vanila GNNs. 
+Presented in \cite{GNN} GNN architecture is commonly refered as vanilla GNN.
 
 
 
-% TODO: list some examples of different approaches?
-In this work <TODO list approaches we will use>
+% TODO: detailed about vanila GNN model, deal with undirected graphs, limitations
 
+
+Over the last decade, there have been proposed a huge number of new architectures and frameworks, which 
+outperform vanilla GNNs. Below there will be desctibed several of them. 
 
 % CONVOLUTIONS
 
-% Convolution based model, which allows to deal with graph data, was GCN model proposed in \cite{GCN}.
-A popular approach <TODO> is convolution based architecture, firstly proposed in work (Le-
-Cun et al., 1995).
-Convolution neural networks (CNN) have been applied to a wide range of computer
-vision tasks, such as <TODO examples and cites> and have proved their effectiveness
-to operate with grid-like structure data, such as images.
-Any grid can be seen as a graph of grid like structure. So the idea to extend and generalize
-convolutions to graph data is very natural and % TODO: вызывала большйой интерес.
 
-% TODO: про свёртки немножко написать
+One of the most common modern approaches to constructing of graph neural network is
+neural networks based on convolutions.
 
-... such convolution has predefined reception field. Which means, that convolution kernel is 
+Convolution based neural networks (CNNs) have been applied to a wide range of computer
+vision tasks and have proved their effectiveness to operate with grid-like structure data, such as images.
+This approach has been proposed in \cite{CNN}.
+
+Any grid can be seen as a graph of grid like structure in the Euclidean space. So the idea to extend and generalize
+convolutions to graph data seemed to be very natural and aroused great interest among researchers.
+
+
+Convolution used in CNNs has predefined reception field. Which means, that convolution kernel is 
 applied to the neighbourhood of predefined size. In case of grid-like structure data, such as
 images, the structure of the image doesn't change: each pixel has same number of neighbors. 
-However, such property is not guaranteed[TODO] for graph data. Each node of the graph may have 
+However, such property is not guaranteed for graph data. Each node of the graph may have 
 different number of neighbors, so neighbourhood structure differs from node to node. So,
 to apply convolutions to graph data, it should be prepared to operate with neighborhood 
-with different structure. % TODO: edit
+with different structure.
 
-% TODO add img conv_vs_graph conv from https://arxiv.org/abs/1901.00596
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{conv_vs_grpahconv}
+    \caption{2D Convolution vs. Graph Convolution \cite{SurveyOnGNN}}
+    \label{fig:conv}
+\end{figure}
 
-The solution of this issue was proposed in Spectral Network model Bruna et al. [2014]. In this work
-convolution operation is defined using eigendecomposition of the graph Laplacian.
-
+The first solution of this problem was proposed in Spectral Network model \cite{Spectral}.This work proposes
+to define convolution operation on graphs using eigendecomposition of the graph Laplacian.
 
 For a undirected graph $G = (V,E)$ with $|V|=n$ , graph Laplacian matrix  $L \in R^{n \times n}$ is defined as 
-\[L = D-A\]
+
+\begin{equation}
+    L = D - A
+    \label{eq:laplacian}
+ \end{equation}
 
 where $A$ is adjacency matrix of the graph, and $D$ is degree matrix.
 
-% TODO: можно формулок для A и D написать
+Adjacency matrix $A \in R^{n \times n}$ contains information about graph structure and is defined as:
+
+\begin{equation}
+    A_{ij} = 
+    \begin{cases}
+        1 \text{ if } \{v_i, v_j \} \in E, i \neq j,\\
+        0 \text{ otherwise},\\
+    \end{cases}
+    \label{eq:adj}
+\end{equation}
+
+Degree matrix $D \in R^{n \times n}$ is a diagonal matrix containing degrees of vertices and defined as:
+
+\begin{equation}
+    D_{ii} = deg(v_i)
+    \label{eq:deg_mat}
+ \end{equation}
+
 
 Symmetic normalized Laplacian is defined as 
-\[L = D^{-\frac{1}{2}}LD^{-\frac{1}{2}} = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}}\]
 
-% TODO: добавить картинку laplacian.png from distil
+\begin{equation}
+    L = D^{-\frac{1}{2}}LD^{-\frac{1}{2}} = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}}
+    \label{eq:normalized_laplacian}
+ \end{equation}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{laplacian}
+    \caption{The example of Laplacian for a graph from \cite{distillGCN}}
+    \label{fig:laplacian}
+\end{figure}
 
 The convolution operation  as for a feature node vector $x \in R^N$ with a
 filter $g_\theta = diag(\theta)$ parameterized by $\theta \in R^N$ is defined as:
 
-\[Conv(g_\theta,x) = Ug_\theta(\Lambda)U^{T}x\]
+
+\begin{equation}
+    Conv(g_\theta,x) = Ug_\theta(\Lambda)U^{T}x
+    \label{eq:simple_conv}
+ \end{equation}
+
 
 where $U$ is the matrix of eigenvectors of the normalized Laplacian, $\Lambda$ is a diagonal matrix of 
 eigenvalues from the spectral decomposition of normalized Laplacian: $L = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}} = U\Lambda U^{T}$.
@@ -81,19 +117,26 @@ spectral convolutions.
 However, this convolution operation is very computational expensive as multiplication with matrix $U$ has complexity $O(n^2)$.
 
 
-Authors of [Hammond et al. [2011]] susuggested to use approximation to calculate $Conv(g_\theta,x)$ using Chebyshev polinomials 
-$T_k(x)$ up to $K^{th}$, which is defined as 
-\[
+Authors of \cite{ChebAppr} susuggested to use approximation to calculate 
+$Conv(g_\theta,x)$ using Chebyshev polinomials $T_k(x)$ up to $K^{th}$, which is defined as 
+
+\begin{equation}
     T_k (x) = 2xT_{k-1}(x) - T_{k-2}(x)
-\]
+    \label{eq:cheb_polynom}
+ \end{equation}
+
+
 where $T_0(x)=1$ an $T_1(x)=x$
 
 So convolution of a signal $x$ with filter $g_\theta$ is suggested to be:
-\[
+
+\begin{equation}
     Conv(g_\theta,x) \approx \sum_{k=0}^{K}{\theta}_k T_k(\hat{L})x
-\]
-where
-$\hat{L} = \frac{2}{\lambda_{max}}L-I_N$ and $\lambda_max$ stands for the largest eigenvalue of $L$.
+    \label{eq:conv_appr}
+ \end{equation}
+
+where $\hat{L} = \frac{2}{\lambda_{max}}L-I_N$ and $\lambda_max$ 
+stands for the largest eigenvalue of $L$.
 The complexity of evaluating convolution in proposed way is $O(|E|)$, i.e. is linear in the number of edges.
 
 In \cite{ChebNet} there was proposed ChebNet - a convolutional neural network on grpahs based on K-localized convolution.
@@ -101,22 +144,29 @@ In \cite{ChebNet} there was proposed ChebNet - a convolutional neural network on
 Authors \cite{GCN} developed the idea of usage spectral convolution and presented GCN model. The key idea is to build
 convolutional neural network by stacking multiple simplified convolution layers with limited parameter $K=1$.
 Single layer of such network can be expressed as: 
-\[
+
+
+\begin{equation}
     Conv(g_\theta,x) \approx {\theta}_0 T_0(\hat{L})x + {\theta}_1 T_1(\hat{L})x = {\theta}_0 x + {\theta}_1 (\frac{2}{\lambda_{max}}L-I_N)x
-\]
+    \label{eq:gcn_conv_appr}
+ \end{equation}
 
 Then authors of \cite{GCN} suggested to approximate $\lambda_{max} \approx 2$, so the expresion turns into the following one:
 
-\[
+\begin{equation}
     Conv(g_\theta,x) \approx {\theta}_0 x + {\theta}_1 (L-I_N)x = {\theta}_0 x - {\theta}_1 D^{-\frac{1}{2}}AD^{-\frac{1}{2}}x
-\]
+    \label{eq:gcn_conv_appr2}
+ \end{equation}
+
 
 However, instead of two parameters $\theta_0$ and $\theta_1$ authors suggested to use the single one - $\theta = \theta_0 = -\theta_1$. Thus it allows to
 address overfitting problem and to simplify computations per layer. So, the follwoing expression is
 
-\[
+
+\begin{equation}
     Conv(g_\theta,x) \approx {\theta}(I_N + D^{-\frac{1}{2}}AD^{-\frac{1}{2}})x
-\]
+    \label{eq:gcn_conv_appr3}
+ \end{equation}
 
 Such expression of the convolution operation has a flow. The multiplier  $D^{-\frac{1}{2}}AD^{-\frac{1}{2}}$ has eigenvalues in 
 range $[0,2]$, so that it leads to numerical instabilities when its repeated applying as layers in neural network. To alleviate this
@@ -135,8 +185,7 @@ expessed as
 So, GCN model allows to calculate node representations as vectors (embeddings) using layer-wise convolutional neural network.
 
 We can rewrite the equation \ref{eq:final_gcn} in term of neural network layer. So, obtained the graph convolutional layer 
-is the following
-
+is the following:
 
 \begin{equation}
     H^{(l+1)} = ReLU(\tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}H^{(l)}W^{(l)})
@@ -146,8 +195,12 @@ is the following
 where $H^{(l)} \in R^{n \times d}$ is a hidden state matrix on layer $l$, $d$ is a dimension
 of the convolution and $W^{(l)} \in R^{d \ time d}$ is a matrix of trainable parmeters of the layer $l$.
 
-% TOOD: about RelU ?
+ReLU function is an activation function, used to add non-linearity to neural network layer. It is defined as
 
+\begin{equation}
+    ReLU(x) = max(0,x)
+    \label{eq:relu}
+\end{equation}
 
 % GAT
 
@@ -186,7 +239,22 @@ As a result, the coefficients computed by the attention mechanism can be express
     \label{eq:final_att_coef}
  \end{equation}
 
-where $||$ denotes concatenation operation. When coefficients are obtained - we can apply them to corresponding nodes:
+where $||$ denotes concatenation operation. LeackyReLU - a activation function similar to ReLU \ref{eq:relu}, but
+apable of taking negative values:
+
+\begin{equation}
+    LeackyReLU(x) = 
+    \begin{cases}
+        x, \text{ if } \geq 0, \\
+        ax, \text{ otherwise} \\
+    \end{cases}
+    \label{eq:leacky_relu}
+\end{equation}
+
+
+% TODO about LeackyReLU
+
+When coefficients are obtained - we can apply them to corresponding nodes:
 
 \begin{equation}
     h'_i = \sigma \left( \sum_{j \in {N_i}} \alpha_{ij} W h_j \right)
@@ -211,8 +279,16 @@ On the prediction (final) layer, instead of concatenation, authors suggest to em
     \label{eq:multihead2}
 \end{equation}
 
-This last step is called aggregation and show on %TODO.
-% TODO: add picture from GAT
+
+This last step is called aggregation and show on \ref{fig:gat}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{gat}
+    \caption{GAT network illustration from \cite{GAT}. Left: calculating of attention for each node. Right: feature aggregation from 3 head attention.}
+    \label{fig:gat}
+\end{figure}
+
 
 So, GAT model allows to assign different importances to nodes of a same neighborhood which distinguishes it favorably from GCNs
 model. Besides GAT model has another feature: the computation of the node-neighbor pairs is parallelizable thus the operation
@@ -226,10 +302,6 @@ Over-smoothing suggests that node representations becomes indistinguishable as t
 to a certain value. This fact assigns restrictions on the number of layers in the network and as a result
 limitations network's ability to extract information from high-order neighbors.
 
-
-% TODO: later about resnet
-% To overcome the isuue of network depth limit, in computer vision filed there has beed proposed ResNet model \cite{ResNet},
-% based on residual connections between different layers of the network. 
 
 Authors of \cite{GCNII} extends GCN model with two modifications to prevent over-smoothing issue. Proposed architecture 
 called Graph Convolutional Network via Initial residual and Identity mapping (GCNII).
@@ -260,14 +332,6 @@ The value of $\beta$ depends of the number of the layer. Authors suggest to set 
 where $\lambda$ is hyperparameter. 
 
 
-Authors of \cite{GCNII} propose a new deep model GCN-II, which show a simple way to impove [TODO]
-
-Recent paper \cite{GCNII}
-
-% TODO: about GCNII
-
-
-
 % Pooling
 
 Originally, GCN, GAT and GCNII models were developed for solving node classification problem.
@@ -291,5 +355,4 @@ As a final classifier, simple 2-layer perceptron will be used:
 \end{equation}
 
 
-
-%TODO: In the current paper ...
+In the current paper the folowing models will be trained and evaluated: GCN\cite{GCN}, GAT\cite{GAT} and GCNII\cite{GCNII}.
