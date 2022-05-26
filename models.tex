@@ -53,7 +53,7 @@ with different structure.
 The first solution of this problem was proposed in Spectral Network model \cite{Spectral}.This work proposes
 to define convolution operation on graphs using eigendecomposition of the graph Laplacian.
 
-For a undirected graph $G = (V,E)$ with $|V|=n$ , graph Laplacian matrix  $L \in R^{n \times n}$ is defined as 
+For a undirected graph $G = (V,E)$ with $|V|=n$ , graph Laplacian matrix  $L \in \mathbb{R}^{n \times n}$ is defined as 
 
 \begin{equation}
     L = D - A
@@ -62,7 +62,7 @@ For a undirected graph $G = (V,E)$ with $|V|=n$ , graph Laplacian matrix  $L \in
 
 where $A$ is adjacency matrix of the graph, and $D$ is degree matrix.
 
-Adjacency matrix $A \in R^{n \times n}$ contains information about graph structure and is defined as:
+Adjacency matrix $A \in \mathbb{R}^{n \times n}$ contains information about graph structure and is defined as:
 
 \begin{equation}
     A_{ij} = 
@@ -73,7 +73,7 @@ Adjacency matrix $A \in R^{n \times n}$ contains information about graph structu
     \label{eq:adj}
 \end{equation}
 
-Degree matrix $D \in R^{n \times n}$ is a diagonal matrix containing degrees of vertices and defined as:
+Degree matrix $D \in \mathbb{R}^{n \times n}$ is a diagonal matrix containing degrees of vertices and defined as:
 
 \begin{equation}
     D_{ii} = deg(v_i)
@@ -95,8 +95,8 @@ Symmetic normalized Laplacian is defined as
     \label{fig:laplacian}
 \end{figure}
 
-The convolution operation  as for a feature node vector $x \in R^N$ with a
-filter $g_\theta = diag(\theta)$ parameterized by $\theta \in R^N$ is defined as:
+The convolution operation  as for a feature node vector $x \in \mathbb{R}^N$ with a
+filter $g_\theta = diag(\theta)$ parameterized by $\theta \in \mathbb{R}^N$ is defined as:
 
 
 \begin{equation}
@@ -167,8 +167,8 @@ range $[0,2]$, so that it leads to numerical instabilities when its repeated app
 problem, authors propose to replace numerical unstable multiplier $D^{-\frac{1}{2}}AD^{-\frac{1}{2}}$
 with $\tilde{D}^{-\frac{1}{2}}\tilde{A}\tilde{D}^{-\frac{1}{2}}$, where $\tilde{A}=A+I_N$ and $\tilde{D}_{ii}=\sum_{j}\tilde{A}_{ij}$.
 
-The final rule for linear convolutional layer for GCN can be generalized as following. Let signal $X \in R^{N\times C}$ is a matrix of $C$-dimensional
-feature vectors for each of $N$ nodes, and $\Theta \in R^{C \times F}$ is a matrix of filter parameters. So convoled signal $X' \in R^{N \times F}$ is 
+The final rule for linear convolutional layer for GCN can be generalized as following. Let signal $X \in \mathbb{R}^{N\times C}$ is a matrix of $C$-dimensional
+feature vectors for each of $N$ nodes, and $\Theta \in \mathbb{R}^{C \times F}$ is a matrix of filter parameters. So convoled signal $X' \in \mathbb{R}^{N \times F}$ is 
 expessed as 
 
 \begin{equation}
@@ -186,8 +186,8 @@ is the following:
     \label{eq:final_gcn_nn}
 \end{equation}
 
-where $H^{(l)} \in R^{n \times d}$ is a hidden state matrix on layer $l$, $d$ is a dimension
-of the convolution and $W^{(l)} \in R^{d \ time d}$ is a matrix of trainable parmeters of the layer $l$.
+where $H^{(l)} \in \mathbb{R}^{n \times d}$ is a hidden state matrix on layer $l$, $d$ is a dimension
+of the convolution and $W^{(l)} \in \mathbb{R}^{d \ time d}$ is a matrix of trainable parmeters of the layer $l$.
 
 ReLU function is an activation function, used to add non-linearity to neural network layer. It is defined as
 
@@ -206,10 +206,10 @@ The main feature of attention mechanism is that it allows to focus on the most r
 to make a desicion.
 
 Authors of \cite{GAT} proposes a graph attentional layer, which is a building block for the arbitrary graph atteniton network.
-The input of the layer is a set of node feature $ h=\{ h_1,\dots , h_N \}$, where $h_i \in R^F$, $N$ - number of nodes, $F$ - the number
+The input of the layer is a set of node feature $ h=\{ h_1,\dots , h_N \}$, where $h_i \in \mathbb{R}^F$, $N$ - number of nodes, $F$ - the number
 of node features. As result of layer processing is a new set of node features with other dimension: $h' = \{ h'_1 \dots h'_N \}$.
 Each layer computes attentions coefficients $\alpha_{ij}$ by applying attention mechanism function $\alpha : R^{F'} \times R^{F'} \rightarrow R$.
-to input node features multiplied to the shared weight matrix $W \in R^{F'} \times R^{F}$:
+to input node features multiplied to the shared weight matrix $W \in \mathbb{R}^{F'} \times R^{F}$:
 
 \begin{equation}
     e_{ij} = \alpha(Wh_i, Wh_j)
@@ -224,7 +224,7 @@ be able to compute only coefficients for a node is some defined node's neighborh
 \end{equation}
 
 The last element is an attention function $\alpha$ itself. Authors of \cite{GAT} proposed to use
-single-layer feedforward neural network parameterized by $a \in R^{2F'}$ and apply LeakyReLU nonlinearity.
+single-layer feedforward neural network parameterized by $a \in \mathbb{R}^{2F'}$ and apply LeakyReLU nonlinearity.
 
 As a result, the coefficients computed by the attention mechanism can be expressed as
 \begin{equation}

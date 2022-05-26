@@ -15,39 +15,37 @@ Below there are description of the data preparation process, followed by model i
 of the organization of the training process.
 
 
-% TODO: say about what experiments are
-
 \subsection{Data preparing process}
 
-Framework \texttt{Pytorch} proposes a unified way to work with data.
+Framework \texttt{Pytorch} proposes a unified way \footnote{\url{https://pytorch.org/tutorials/beginner/basics/data_tutorial.html\#datasets-dataloaders}} to work with data.
 It consists of two stages:
-preapre dataset object with defined <TODO check from doc> methods to access data and configure DataLoader<TODO linK>
+preapare dataset object with defined methods to access data and configure DataLoader
 to form batch of predefined size. Batch consists of vectors of features from datasets and labels corresponding them
-in the case of solving the classification problem. <TODO: edit> . DataLoader allows to
+in the case of solving the classification problem. DataLoader allows to
 itearete data within one train epoch.
 
-The same approach is used in \texttt{Pytroch Geometric} geometric framework. The difference is that
-dataset object should implenet special interface <TODO>, and DataLoaders allows to union several graph in single batch.
+The same approach is used in \texttt{Pytroch Geometric} geometric framework.
 
-% TODO about minibatchin
-% Since graphs in graph classification datasets are usually small, a good idea is to batch the graphs before inputting them into a Graph Neural Network to guarantee full GPU utilization. In the image or language domain, this procedure is typically achieved by rescaling or padding each example into a set of equally-sized shapes, and examples are then grouped in an additional dimension. The length of this dimension is then equal to the number of examples grouped in a mini-batch and is typically referred to as the batch_size.
+The difference is in the way of forming batches. Implementation of  \texttt{DataLoader} class in \texttt{torch\_geometric.data}
+allows to make batch from several graph data by stacking adjacency matrices  in a diagonal fashion. So that
+batch is just a large graph with miltiple isolated subgraphs.Example is shown on the image \ref{fig:batch} from Pytroch Geometric tutorial \footnote{ \url{https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html} }.
 
-% However, for GNNs the two approaches described above are either not feasible or may result in a lot of unnecessary memory consumption. Therefore, PyTorch Geometric opts for another approach to achieve parallelization across a number of examples. Here, adjacency matrices are stacked in a diagonal fashion (creating a giant graph that holds multiple isolated subgraphs), and node and target features are simply concatenated in the node dimension:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{batch}
+    \caption{Pytorch Geometric approach to batches}
+    \label{fig:batch}
+\end{figure}
 
-% TODO: batching picture
-
-
-In this work two groups of datasets are used. The first one contains datasets from TUdataset\cite{TUDataset}
-collection: MUTAG, PROTEINS, DD and ENZYMES. \texttt{Pytroch Geometric} provides convenient access to all of then with
-
-\texttt{torch\_geometric.datasets.TUDataset} class.
+In the current two groups of datasets are used. The first one contains datasets from TUdataset\cite{TUDataset}
+collection: \texttt{MUTAG}, \texttt{PROTEINS}, \texttt{DD} and \texttt{ENZYMES}. \texttt{Pytroch Geometric}
+ provides convenient access to all of then with \texttt{torch\_geometric.datasets.TUDataset} class.
 \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/datasets.html\#torch_geometric.datasets.TUDataset}}
 
-
-The second group contains of Brain fMRI dataset and Kidney RNASeq dataset used in \cite{Netpro2vec}. Graphs from
+The second group contains \texttt{Brain fMRI} dataset and \texttt{Kidney RNASeq} dataset used in \cite{Netpro2vec}. Graphs from
 these datasets are available in \texttt{graphml} format. So to operate them in the way
-defined in \texttt{torch\_geometric.datasets}, there has been developed a custom \texttt{Dataset} object, which
-extend \texttt{InMemoryDataset} \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/data.html\#torch_geometric.data.InMemoryDataset}}
+defined in framework, there has been developed a custom \texttt{Dataset} object, which
+extends \texttt{InMemoryDataset} \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/data.html\#torch_geometric.data.InMemoryDataset}}
 class and allows to process them the same way as datasets from the first group.
 
 \subsection{Models configuration}
@@ -64,6 +62,32 @@ and linear layer with dimension $32$, followed by  final linear layer to calcula
 
 GCNII model contains of $16$ convolutions with hidden size $64$,  linear layer with dimension $32$,
 followed by  final linear layer to calculate logits.
+
+Hyperparameters for models where search using the following strategy.
+Dataset is split into validation(20\%) and training set(80\%) and train model
+with defined set of hyperparameters. The example of hyperparameters tuning 
+for GCN model on \texttt{MUTAG} dataset can be found in table \ref{tab:hyper}.
+
+When the best set is found, 
+the process of testing starts: dataset is split into train set(80\%) and 
+test set(20\%). Then train set is split into validation set(30\%) and train set (70\%).
+After each epoch, model is tested on validation set. When training process is finished,
+the best model is selected with respect to the metrics measured on validation set.
+Then best model is evaluated on test set.
+
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|l|l|l|} \hline
+    Conv dimension & 1 Conv & 3 Conv         \\ \hline 
+    128            & 0.9286 & 0.962          \\ \hline
+    64             & 0.9103 & 0.9107         \\ \hline
+    32             & 0.8913 & \textbf{0.963} \\ \hline
+    16             & 0.8454 & 0.8454    \\ \hline
+    \end{tabular}
+    \caption{Results of hyperparameters tuning for GCN network on MUTAG datset}
+    \label{tab:hyper}
+\end{table}
 
 
 \subsection{Models training pipeline}
@@ -95,35 +119,32 @@ are shown on figure \ref{fig:wnb}
 
 \subsection{Node features transformation}
 
-% about node features
-
-% TODO: move this section from here?
-
-All neural networks models, which are  <TODO>... requires node feature matrix. This matrix
-acts a a signal in term of signal processing with convolutions and the base embeddings of nodes,
+All neural networks models, which will be used in experiments requires node feature matrix. This matrix
+acts as a signal in term of signal processing with convolutions and the base embeddings of nodes,
 which transformation should be applied to.
 
 In some cases, encoded node labels may be used as node features. However, some networks
 do not have neither node labels, nor features.
 In that case, node features can be constructed additionaly as a preprocessing step.
 
-In the current work two approches will be used to constuct node features.
+In the current paper two approches will be used to construct node features.
 
 The first one is to use one-hot reprosentation of node degrees. So the node features matrix
 is matrix $X \in \{0,1\}^{N \times d}$ having property $\sum_{j=1}^{d}X_{ij} = 1$ for any $i \in 1 \dots N$,
 where $N$ is the number of nodes in graph $G$ and $d$ is max degree over all nodes in graph.
 
-% TODO: схемку с примером
 
-The second approach is to use Node Distance Distribution matrix presented in \cite{Netpro2vec}.
+The second approach is to use Node Distance Distribution matrix(NDD) presented in \cite{Netpro2vec}.
+For a graph $G=(V,E), |V|=N$ matrix $NDD \in \mathbb{R}^{N \times D}$ where $D$ is diameter of the graph is calculated as follows:
 
-% TODO: describe NDD matrix
+\begin{equation}
+    N_{ih} = \frac{|v_j \in V : dist(v_i, v_j) \in [h, h + \delta_h]|}{N-1}
+    \label{eq:ndd}
+\end{equation}
 
-% TODO: add schema
+where $dist(v_i, v_j)$ is a distance between nodes $v_i$ and $v_j$, $h \in \mathbb{N}, h \in [1,D]$,
+$\delta_h$ used to quantizes interval $[0,D]$. So NDD matrix provides information about the global topology of the graph.
 
-% About implementation
-
-% Node features matrix constuction is implemented using TORCH_GEOMETRIC.TRANSFORMS package in Pytorch Geometric Framework
 
 Node features matrix constuction is implemented using
 
@@ -136,10 +157,6 @@ One-hot encoded degrees features are added using built-in transformation \texttt
 Encoded degrees were concatenated to the current node labels features.
 
 To use node distance matrix as a node feature matrix, new custom transformation was developed.
-
-
-
-
 
 
 \subsection{Results}
