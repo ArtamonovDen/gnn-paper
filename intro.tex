@@ -10,19 +10,10 @@ to apply neural networks algorithms, as grah data is non-Euclidean.
 
 To solve this issue researches developed a sepecial kind of neural networks, which can operate graph data, called 
 Graph Neural Network, or GNN \cite{GNN}. Since the first introduction of GNN, a lot of new upgraded, capable and more powerful 
-models models have been developed and used for many practical applications in such areas as
-physics simulations <TODO cite>,  antibacterial discovery<TODO cite>,  traffic prediction<TODO cite>, fake news detection<TODO>, 
-recommendation systems <TODO>, computer visio and many others. 
-% TODO: cite from GCN2 paper
-
-%For example. one of the most popular application is recommender system at Pinterest company, called PinSage, introduced in
-% ... and used in production.  <TODO: edit and cite>
-
-% TODO: maybe about twitter
-
-% <examples from here https://distill.pub/2021/gnn-intro/>
-% <May add examples and pictures from here https://gordicaleksa.medium.com/how-to-get-started-with-graph-machine-learning-afa53f6f963a>
-
+models have been developed and used for many practical applications in such areas as
+physics simulations \cite{physics}, traffic prediction \cite{traffic}, biology\cite{biology1} \cite{biology2},
+fake news detection \cite{fakenews}, social analysis \cite{social}, computer vision \cite{cv1} \cite{cv2}
+recommendation systems \cite{reccomend} and many others. 
 
 GNN models can be used to solve three general types of prediction tasks on graphs: 
 node level, edge level and graph level tasks. Node level tasks aims to predict some propeprty of node, for example
@@ -32,19 +23,26 @@ Such tasks are related to predicting of graph level properties, e.g. class of th
 graph classification problem. This is analogous to image classification task in computer vision field or
 sentiment analysis tasks in natural language processing.
 
+The graph theory-based approaches are commonly used for extracting knowledge 
+for biomedical research. Graphs represent structural networks, which can be generated,
+from anatomical regions connections (as in the case of brain networks \cite{intro_brain}),
+molecular structures data (e.g., chemical compounds \cite{intro_2}, proteins structure \cite{intro_3} networks), or physical interactions between
+molecules (e.g., protein-protein \cite{intro_4}, lncRNA protein interaction networks \cite{intro_5}). 
 
-Graph classification problem is very commonly used for biomedical applications.
-
-% TODO: from Intro of Netprovec or from here  https://arxiv.org/pdf/2101.06569.pdf
-
+In the era of big data, the size and complexity of
+the biomedical networks are continuously increasing. So, new chellenges in 
+biomedical networks analysis requires new approaches. And one of them is using neural networks 
+for solving prediction tasks on graphs, such as graph classification problem, which arises in 
+many biomedical applications.
 
 The main goal of the current work is to compare several different approaches to solve graph classification problem 
-on biomedical data. <TODO: say about relevance (why biomed?)>. This approaches will include the usage of 
-several graph convolutional networks architectures : GCN \cite{GCN}, <TODO: list all with cites>. Besides, 
-several ways for generation of node feature matrix will be applied. For node feature matrix generation will be used
-encoded information about labels and degrees of node, as well as node distance distibution matrix(NDD), proposed in \cite{Netpro2vec}
+on biomedical data.  This approaches will include the usage of 
+several graph neural networks architectures : GCN \cite{GCN}, GAT\cite{GAT} and GCNII \cite{GCNII}. Besides, 
+several approaches for generation of node feature matrix will be applied. For node feature matrix generation will be used
+encoded information about labels and degrees of node, as well as node distance distribution matrix(NDD), proposed in \cite{Netpro2vec}
 and used to obtain graph embeddings.
 
 The paper is organized as follows. \hyperref[sec:datasets]{Section2} contains detailed description of used biomedical dataset.
 Short review of GNN algorigthms and description of used algorigthms are presented in \hyperref[sec:models]{Section 3}.
-\hyperref[sec:experiments]{Section 4} contains implementation details and experiments results. Finally, \hyperref[sec:conclusion]{Section 6} reports conclusion. 
+\hyperref[sec:experiments]{Section 4} contains implementation details and experiments results.
+ Finally, \hyperref[sec:conclusion]{Section 6} reports conclusion. 

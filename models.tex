@@ -3,7 +3,7 @@
 
 
 
-In this section, we will provide a short literature review from the first attempts to
+In this section, there will be provided a short literature review from the first attempts to
 apply neural nets to graph data to modern approaches using using convolutions and attention mechanism.
 
 
@@ -19,12 +19,11 @@ Presented in \cite{GNN} GNN architecture is commonly refered as vanilla GNN.
 
 
 Over the last decade, there have been proposed a huge number of new architectures and frameworks, which 
-outperform vanilla GNNs. Below there will be desctibed several of them. 
+outperform vanilla GNNs. Below there will be described several of them. 
 
 % GCN
-
-
-One of the most common modern approaches to constructing of graph neural network is
+\subsection{GCN}
+One of the most common modern approaches to construct of graph neural network is
 neural networks based on convolutions.
 
 Convolution based neural networks (CNNs) have been applied to a wide range of computer
@@ -37,7 +36,7 @@ convolutions to graph data seemed to be very natural and aroused great interest 
 
 Convolution used in CNNs has predefined reception field. Which means, that convolution kernel is 
 applied to the neighbourhood of predefined size. In case of grid-like structure data, such as
-images, the structure of the image doesn't change: each pixel has same number of neighbors. 
+images, the structure of the image doesn't change: each pixel has the same number of neighbors. 
 However, such property is not guaranteed for graph data. Each node of the graph may have 
 different number of neighbors, so neighbourhood structure differs from node to node. So,
 to apply convolutions to graph data, it should be prepared to operate with neighborhood 
@@ -197,7 +196,7 @@ ReLU function is an activation function, used to add non-linearity to neural net
 \end{equation}
 
 % GAT
-
+\subsection{GAT}
 Along with spectral convolution approach, there are other ways to prepare node embeddings. One of such approaches, is 
 attention-based architecture model called Graph Attention Networks (GAT) proposed in \cite{GAT}.
 The main idea of this model is to apply attention mechanism to graph data. Based on attention models have become 
@@ -284,7 +283,7 @@ model. Besides GAT model has another feature: the computation of the node-neighb
 of attention calculating is very efficient.
 
 % GCN2
-
+\subsection{GCNII}
 Both GCN\cite{GCN} and GAT\cite{GAT} models are shallow. Attempts to stacking more layers and to add non-linearity
 tends to degrade the performance of these models \cite{GCNII} because of over-smoothing phenomena, described in \cite{OverSmoothing}.
 Over-smoothing suggests that node representations becomes indistinguishable as thaey are inclined to converge 
@@ -320,11 +319,10 @@ Adding of identity mapping provides regularization on weight matrix $W^{(l)}$ to
 The value of $\beta$ depends of the number of the layer. Authors suggest to set $\beta_l = \log(\frac{\lambda}{l}+1) \approx \frac{\lambda}{l}$,
 where $\lambda$ is hyperparameter. 
 
-
 % Pooling
-
+\subsection{Pooling}
 Originally, GCN, GAT and GCNII models were developed for solving node classification problem.
-These methods allows to get node embedding and learn neural network to match it to the specified label.
+These methods allow to get node embedding and learn neural network to match it to the specified label.
 
 However, all these methods can be easily applied for solving graph classification problem using pooling operation \cite{distillGCN}.
 Pooling operation allows to aggregate information from final node embeddings and the apply predictor for final graph classification.
@@ -342,6 +340,5 @@ As a final classifier, simple 2-layer perceptron will be used:
     c_i = W_2(Relu(W_1r_i))
     \label{eq:final_classifier}
 \end{equation}
-
 
 In the current paper the folowing models will be trained and evaluated: GCN\cite{GCN}, GAT\cite{GAT} and GCNII\cite{GCNII}.

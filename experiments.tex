@@ -39,7 +39,7 @@ batch is just a large graph with miltiple isolated subgraphs.Example is shown on
 
 In the current two groups of datasets are used. The first one contains datasets from TUdataset\cite{TUDataset}
 collection: \texttt{MUTAG}, \texttt{PROTEINS}, \texttt{DD} and \texttt{ENZYMES}. \texttt{Pytroch Geometric}
- provides convenient access to all of then with \texttt{torch\_geometric.datasets.TUDataset} class.
+ provides convenient access to all of them with \texttt{torch\_geometric.datasets.TUDataset} class.
 \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/datasets.html\#torch_geometric.datasets.TUDataset}}
 
 The second group contains \texttt{Brain fMRI} dataset and \texttt{Kidney RNASeq} dataset used in \cite{Netpro2vec}. Graphs from
@@ -50,20 +50,20 @@ class and allows to process them the same way as datasets from the first group.
 
 \subsection{Models configuration}
 
-Three graph neural networks are trained and inferenced in the current work. Below there are information
+Three graph neural networks are trained and inferenced in the current paper. Below there are information
 about these models' configuration used in exeriments.
 
 GCN model contains 3 convolution layers with hidden layer dimension equal to $128$,
 one hidden layer with dimension $64$ and the final linear layer to calculate logits.
-The valus of hyperparameters are the following: $\alpha=0.5$ and $\lambda=0.1$.
+The values of hyperparameters are the following: $\alpha=0.5$ and $\lambda=0.1$.
 
-GAT model contains two GAT convolution with 8 and 1 heads respectively and hidden deminsion equal to $64$
+GAT model contains two GAT convolution with 8 and 1 heads respectively and hidden demension equal to $64$
 and linear layer with dimension $32$, followed by  final linear layer to calculate logits.
 
 GCNII model contains of $16$ convolutions with hidden size $64$,  linear layer with dimension $32$,
 followed by  final linear layer to calculate logits.
 
-Hyperparameters for models where search using the following strategy.
+Hyperparameters for models where searched using the following strategy.
 Dataset is split into validation(20\%) and training set(80\%) and train model
 with defined set of hyperparameters. The example of hyperparameters tuning 
 for GCN model on \texttt{MUTAG} dataset can be found in table \ref{tab:hyper}.
@@ -154,10 +154,7 @@ package. It allows to apply transformation to feature matrix by concatenating or
 One-hot encoded degrees features are added using built-in transformation \texttt{OneHotDegree}
 \footnote{\url{https://pytorch-geometric.readthedocs.io/en/latest/modules/transforms.html\#torch_geometric.transforms.OneHotDegree}}
 
-Encoded degrees were concatenated to the current node labels features.
-
-To use node distance matrix as a node feature matrix, new custom transformation was developed.
-
+Encoded degrees were concatenated to the current node labels features. To use node distance matrix as a node feature matrix, new custom transformation was developed.
 
 \subsection{Results}
 
